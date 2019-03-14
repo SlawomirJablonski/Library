@@ -1,17 +1,10 @@
 package com.crud.kodillalibrary.domain.readers;
 
 import com.crud.kodillalibrary.domain.rents.Rent;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-
-
 
 @Entity
 @Table(name = "READERS")
@@ -34,8 +27,7 @@ public class Reader {
 
     @Id
     @GeneratedValue
-    @NotNull
-    @Column(name = "ID", unique = true)
+    @Column(name = "ID", unique = true, nullable = false)
     public Long getId() {
         return id;
     }
@@ -85,7 +77,3 @@ public class Reader {
         this.rentList = rentList;
     }
 }
-
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Getter

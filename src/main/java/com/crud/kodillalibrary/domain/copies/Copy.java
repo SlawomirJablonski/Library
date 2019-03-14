@@ -1,5 +1,6 @@
 package com.crud.kodillalibrary.domain.copies;
 
+import com.crud.kodillalibrary.domain.Status;
 import com.crud.kodillalibrary.domain.rents.Rent;
 import com.crud.kodillalibrary.domain.titles.Title;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,6 @@ import java.util.List;
 @Entity(name = "COPIES")
 public class Copy {
 
-    public static final String STATUS_AVAILABLE = "available";
-    public static final String STATUS_RENTED = "rented";
-    public static final String STATUS_DAMAGED = "damaged";
-    public static final String STATUS_LOST = "lost";
-
-//egzemplarzy książek, która zawiera id egzemplarza, id tytułu oraz status
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +29,7 @@ public class Copy {
     //private Long titleId;
 
     @Column(name = "STATUS")
-    private String status;
+    private Status status;
 
 
     @OneToMany(
@@ -44,7 +39,7 @@ public class Copy {
             fetch=FetchType.LAZY  )
     private List<Rent> rentList;
 
-    public Copy(Title title, String status) {
+    public Copy(Title title, Status status) {
         this.title = title;
         this.status = status;
     }
@@ -57,7 +52,7 @@ public class Copy {
         this.title = title;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CopyMapper {
 
-    final
-    TitleMapper titleMapper;
+    private final TitleMapper titleMapper;
 
     @Autowired
     public CopyMapper(TitleMapper titleMapper) {

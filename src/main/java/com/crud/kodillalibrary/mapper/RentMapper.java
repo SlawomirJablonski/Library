@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RentMapper {
 
-    final
-    ReaderMapper readerMapper;
-    final
-    CopyMapper copyMapper;
+    private final ReaderMapper readerMapper;
+    private final CopyMapper copyMapper;
 
     @Autowired
     public RentMapper(ReaderMapper readerMapper, CopyMapper copyMapper) {
