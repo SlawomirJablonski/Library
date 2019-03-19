@@ -1,6 +1,7 @@
-package com.crud.kodillalibrary.domain.readers;
+package com.crud.kodillalibrary.domain.h2;
 
 import com.crud.kodillalibrary.domain.rents.Rent;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "READERS")
-public class Reader {
+public class H2Reader {
 
     private Long id;
     private String name;
@@ -17,10 +18,10 @@ public class Reader {
     private Date created;
     private List<Rent> rentList = new ArrayList<>();
 
-    public Reader() {
+    public H2Reader() {
     }
 
-    public Reader(String name, String surname) {
+    public H2Reader(String name, String surname) {
         this.name = name;
         this.surname = surname;
         this.created = new Date();

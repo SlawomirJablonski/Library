@@ -5,6 +5,10 @@ import com.crud.kodillalibrary.domain.readers.Reader;
 import com.crud.kodillalibrary.domain.readers.ReaderDto;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ReaderMapper {
     public Reader mapToReder(ReaderDto readerDto) {
@@ -20,5 +24,11 @@ public class ReaderMapper {
                 reader.getName(),
                 reader.getSurname(),
                 reader.getCreated());
+    }
+
+    public List<ReaderDto> mapToReaderDtoList(List<Reader> list){
+        return list.stream()
+                .map(reader -> mapToReaderDto(reader))
+                .collect(Collectors.toList());
     }
 }

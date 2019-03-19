@@ -3,45 +3,52 @@ package com.crud.kodillalibrary.domain.copies;
 import com.crud.kodillalibrary.domain.Status;
 import com.crud.kodillalibrary.domain.rents.Rent;
 import com.crud.kodillalibrary.domain.titles.Title;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
-
-@NoArgsConstructor
-@Getter
-@Entity(name = "COPIES")
+@Entity
+@Table(name = "COPIES")
 public class Copy {
 
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID",unique = true)
     private Long id;
+    private Title title;
+    private Status status;
+    private List<Rent> rentList = new ArrayList<>();
+
+    public Copy() {
+    }
+
+    public Copy(Title title, Status status) {
+        this.title = title;
+        this.status = status;
+    }
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ID",unique = true, nullable = false)
+    public Long getId() {
+        return id;
+    }
 
     @ManyToOne
     @JoinColumn(name = "TITLE_ID")
-    private Title title;
-    //private Long titleId;
+    public Title getTitle() {
+        return title;
+    }
 
     @Column(name = "STATUS")
-    private Status status;
-
+    public Status getStatus() {
+        return status;
+    }
 
     @OneToMany(
             targetEntity=Rent.class,
             mappedBy="copy",
             cascade = CascadeType.ALL,
             fetch=FetchType.LAZY  )
-    private List<Rent> rentList;
-
-    public Copy(Title title, Status status) {
-        this.title = title;
-        this.status = status;
+    public List<Rent> getRentList() {
+        return rentList;
     }
 
     public void setId(Long id) {
@@ -59,4 +66,5 @@ public class Copy {
     public void setRentList(List<Rent> rentList) {
         this.rentList = rentList;
     }
+
 }

@@ -2,44 +2,55 @@ package com.crud.kodillalibrary.domain.rents;
 
 import com.crud.kodillalibrary.domain.copies.Copy;
 import com.crud.kodillalibrary.domain.readers.Reader;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import java.util.Date;
 
-@NoArgsConstructor
-@Getter
-@Entity(name = "RENTS")
+@Entity
+@Table(name = "RENTS")
 public class Rent {
-    //wypożyczeń, która zawiera id egzemplarza, id czytelnika, datę wypożyczenia i datę zwrotu.
-    @Id
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID",unique = true)
+
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "READER_ID")
     private Reader reader;
-
-    @ManyToOne
-    @JoinColumn(name = "COPY_ID")
     private Copy copy;
-
-    @NotNull
-    @Column(name = "RENT_DATE")
     private Date rentDate;
-
-    @Column(name = "RETURN_DATE")
     private Date returnDate;
+
+    public Rent() {
+    }
 
     public Rent(Reader reader, Copy copy, Date rentDate) {
         this.reader = reader;
         this.copy = copy;
         this.rentDate = rentDate;
+    }
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ID",unique = true, nullable = false)
+    public Long getId() {
+        return id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "READER_ID")
+    public Reader getReader() {
+        return reader;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "COPY_ID")
+    public Copy getCopy() {
+        return copy;
+    }
+
+    @Column(name = "RENT_DATE", nullable = false)
+    public Date getRentDate() {
+        return rentDate;
+    }
+
+    @Column(name = "RETURN_DATE")
+    public Date getReturnDate() {
+        return returnDate;
     }
 
     public void setId(Long id) {
