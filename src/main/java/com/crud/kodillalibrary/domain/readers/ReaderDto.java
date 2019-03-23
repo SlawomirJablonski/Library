@@ -1,7 +1,6 @@
 package com.crud.kodillalibrary.domain.readers;
 
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
 
 @NoArgsConstructor

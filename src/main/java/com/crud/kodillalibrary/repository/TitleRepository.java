@@ -8,6 +8,6 @@ import java.util.Optional;
 @Component
 public interface TitleRepository extends CrudRepository<Title,Long> {
 
-    Optional<Title> findById(Long id);
+    Optional<Title> getTitleById(Long id);
 
 }

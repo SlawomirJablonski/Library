@@ -8,8 +8,6 @@ import java.util.Optional;
 @Component
 public interface RentRepository extends CrudRepository<Rent,Long> {
 
-    Rent findById(Long id);
-
     Optional<Rent> getRentById(Long rentId);
 
     Rent save(Rent rent);

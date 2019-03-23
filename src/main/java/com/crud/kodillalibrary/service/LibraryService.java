@@ -31,8 +31,8 @@ public class LibraryService {
         this.rentRepository = rentRepository;
     }
 
-    public Optional<Reader> getReaderById(Long id) {
-        return readerRepository.findById(id);
+    public Optional<Reader> getReader(Long id) {
+        return readerRepository.getReaderById(id);
     }
 
     public List<Reader> getReaders() {
@@ -44,7 +44,7 @@ public class LibraryService {
     }
 
     public void deleteReader(final Long id){
-        readerRepository.deleteById(id);
+        readerRepository.delete(id);
     }
 
     public void saveTitle(final Title title){
@@ -55,12 +55,12 @@ public class LibraryService {
         copyRepository.save(copy);
     }
 
-    public Optional<Title> getTitleById(final Long id){
-        return titleRepository.findById(id);
+    public Optional<Title> getTitle(final Long id){
+        return titleRepository.getTitleById(id);
     }
 
     public Optional<Copy> getCopyById(final Long id){
-        return copyRepository.findCopyById(id);
+        return copyRepository.getCopyById(id);
     }
 
     public Optional<Copy> findAvailableCopy(final Long id){

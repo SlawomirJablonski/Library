@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/v1/library")
@@ -47,44 +45,41 @@ public class LibraryController {
         this.rentMapper = rentMapper;
     }
 
-    @GetMapping("/getReader")
-    public ReaderDto getReader(@PathVariable Long id) throws ReaderNotFoundException {
-        return readerMapper.mapToReaderDto(libraryService.getReaderById(id)
+    @GetMapping("/readers/{id}")
+    public ReaderDto getReaderById(@PathVariable Long id) throws ReaderNotFoundException {
+        return readerMapper.mapToReaderDto(libraryService.getReader(id)
                 .orElseThrow(() -> new ReaderNotFoundException("Missing reader in library DB")));
     }
 
-    @GetMapping("/getReaders")
+    @GetMapping("/readers")
     public List<ReaderDto> getReaders() {
         return readerMapper.mapToReaderDtoList(libraryService.getReaders());
     }
 
-    //koniecznie dodanie czytelnika
-    @PostMapping("/createReader")
+    @PostMapping("/readers")
     public void createReader(@RequestBody ReaderDto readerDto) {
         libraryService.saveReader(readerMapper.mapToReder(readerDto));
     }
 
-    @DeleteMapping("/deleteReader")
+    @DeleteMapping("/readers/{id}")
     public void deleteReader(@PathVariable Long id) {
         libraryService.deleteReader(id);
     }
 
-    //koniecznie dodanie tytułu
-    @PostMapping("/createTitle")
+    //ok
+    @PostMapping("/titles")
     public void createTitle(@RequestBody TitleDto titleDto) {
         libraryService.saveTitle(titleMapper.mapToTitle(titleDto));
     }
 
-    //dodanie egzemplarza
-    @PostMapping(value ="/createCopy", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping("/copies/title/{titleId}")
     public void createCopy(@PathVariable Long titleId) throws TitleNotFoundException {
-        Title title = libraryService.getTitleById(titleId)
+        Title title = libraryService.getTitle(titleId)
                 .orElseThrow(() -> new TitleNotFoundException("Missing title in DB"));
         libraryService.saveCopy(copyMapper.mapToCopy(title));
     }
 
-    //zmiana statusu egzemplarza
-    @PutMapping("/updateCopyStatus")
+    @PutMapping("/copies")
     public void updateCopyStatus(@RequestBody CopyDto copyDto) throws CopyNotFoundException {
         Copy copy = libraryService.getCopyById(copyDto.getId())
                 .orElseThrow(() -> new CopyNotFoundException("Missing copy in DB"));
@@ -92,24 +87,22 @@ public class LibraryController {
         libraryService.saveCopy(copy);
     }
 
-    //sprawdzenie ilości egzemplarzy danego tytułu dostępnych do wypożyczenia
-    @GetMapping("/getAvailableCopies")
+    @GetMapping("/copies/title/{titleId}")
     public int getAvailableCopies(@PathVariable Long titleId) throws TitleNotFoundException {
-        Title title = libraryService.getTitleById(titleId).
+        Title title = libraryService.getTitle(titleId).
                 orElseThrow(() -> new TitleNotFoundException("Missing title in DB"));
         List<CopyDto> available = copyMapper.mapToCopyDtoList(title.getCopyList());
         return available.size();
     }
 
-    //wypożyczenie książki
-    @PostMapping("/createRent")
-    public RentDto saveRent(@PathVariable Long idReader, @PathVariable Long idCopy)
+    @PostMapping("/rents/readers/{readerId}/copies/{copyId}")
+    public RentDto saveRent(@PathVariable Long readerId, @PathVariable Long copyId)
             throws ReaderNotFoundException, CopyNotFoundException {
 
-        Reader readReader = libraryService.getReaderById(idReader)
+        Reader readReader = libraryService.getReader(readerId)
                 .orElseThrow(() -> new ReaderNotFoundException("Missing reader in library DB"));
 
-        Copy readCopy = libraryService.findAvailableCopy(idCopy)
+        Copy readCopy = libraryService.findAvailableCopy(copyId)
                 .orElseThrow(() -> new CopyNotFoundException("Missing available copy in DB"));
 
         readCopy.setStatus(Status.RENTED);
@@ -119,12 +112,13 @@ public class LibraryController {
         return rentMapper.mapToRentDto(libraryService.saveRent(newRent));
     }
 
-    //zwrot książki
-    @PutMapping("/returnCopy")
+    @PutMapping("/rents/{rentId}")
     public RentDto returnCopy(@PathVariable Long rentId) throws RentNotFoundException {
         Rent readRent = libraryService.getRent(rentId)
                 .orElseThrow(() -> new RentNotFoundException("Missing rent in DB"));
         readRent.setReturnDate(new Date());
+        Copy copy = readRent.getCopy();
+        copy.setStatus(Status.AVAILABLE);
         return rentMapper.mapToRentDto(libraryService.saveRent(readRent));
     }
 }

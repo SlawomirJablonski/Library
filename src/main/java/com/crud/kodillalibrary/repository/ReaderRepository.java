@@ -9,9 +9,7 @@ import java.util.Optional;
 @Component
 public interface ReaderRepository extends CrudRepository<Reader,Long> {
 
-    Optional<Reader> findById(Long id);
+    Optional<Reader> getReaderById(Long id);
 
     List<Reader> findAll();
-
-    void deleteById(Long id);
 }

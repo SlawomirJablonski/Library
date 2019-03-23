@@ -9,6 +9,4 @@ public interface H2ReaderRepository extends JpaRepository<H2Reader, Long> {
     Optional<H2Reader> findById(Long id);
 
     List<H2Reader> findAll();
-
-    void deleteById(Long id);
 }
